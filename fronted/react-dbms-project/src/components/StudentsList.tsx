@@ -16,6 +16,7 @@ import {
 import StudentTable from "./StudentTable";
 import { useRef } from "react";
 import apiClient from "../Services/api-client";
+import AddNewStudent from "./AddNewStudent";
 
 const StudentsList = () => {
   const { classroomId } = useParams();
@@ -82,6 +83,7 @@ const StudentsList = () => {
 
   return (
     <SimpleGrid padding={6}>
+      <AddNewStudent />
       <Box>
         <Box mb={8}>
           <Input
