@@ -17,6 +17,7 @@ import StudentTable from "./StudentTable";
 import { useRef } from "react";
 import apiClient from "../Services/api-client";
 import AddNewStudent from "./AddNewStudent";
+import { FormData } from "./StudentForm";
 
 const StudentsList = () => {
   const { classroomId } = useParams();
@@ -81,14 +82,33 @@ const StudentsList = () => {
       });
   };
 
+  const addNewStudent = (data: FormData) => {
+    const original = [...students];
+
+    const newStudent = { ...data, id: 0 };
+
+    setStudents([...students, newStudent]);
+
+    apiClient
+      .post("/classrooms/addStudent", newStudent)
+      .then((res) => {
+        setStudents([...students, { ...res.data }]);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setStudents(original);
+      });
+  };
+
   return (
     <SimpleGrid padding={6}>
-      <AddNewStudent />
+      {error && <Text>{error}</Text>}
+      <AddNewStudent addNewStudent={(data) => addNewStudent(data)} />
       <Box>
         <Box mb={8}>
           <Input
             type="text"
-            placeholder="Insert new column as IA_"
+            placeholder="Insert new column as IA{number}"
             width="lg"
             display="block"
             ref={columnRef}

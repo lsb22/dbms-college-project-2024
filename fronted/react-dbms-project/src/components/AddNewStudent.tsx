@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Modal,
-  ModalBody,
   ModalHeader,
   ModalOverlay,
   useDisclosure,
@@ -10,10 +9,15 @@ import {
   ModalFooter,
   ModalContent,
 } from "@chakra-ui/react";
-import StudentForm from "./StudentForm";
+import StudentForm, { FormData } from "./StudentForm";
 
-const AddNewStudent = () => {
+interface Props {
+  addNewStudent: (data: FormData) => void;
+}
+
+const AddNewStudent = ({ addNewStudent }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box mb={5}>
       <Box>
@@ -28,13 +32,8 @@ const AddNewStudent = () => {
               Enter Student Details
               <ModalCloseButton />
             </ModalHeader>
-            <ModalBody>
-              <StudentForm />
-            </ModalBody>
+            <StudentForm addNewStudent={addNewStudent} />
             <ModalFooter>
-              <Button colorScheme="blue" type="submit" mr={3}>
-                Submit
-              </Button>
               <Button variant="ghost" onClick={onClose} colorScheme="red">
                 Cancel
               </Button>

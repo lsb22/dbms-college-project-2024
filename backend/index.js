@@ -58,6 +58,31 @@ app.patch("/classrooms/updateMarks/:studentId", (req, res) => {
   });
 });
 
+// adding new student
+app.post("/classrooms/addStudent", (req, res) => {
+  if (!req.body) {
+    return res.json({ message: "body is null" });
+  }
+  console.log(req.body);
+  const q =
+    "insert into students (id,name,age,year,semester,classroom_id) values(default,?,?,?,?,?)";
+
+  db.query(
+    q,
+    [
+      req.body.name,
+      req.body.age,
+      req.body.year,
+      req.body.semester,
+      req.body.classroom_id,
+    ],
+    (err, data) => {
+      if (err) return console.log(err.message);
+      return console.log(data);
+    }
+  );
+});
+
 app.listen(3000, () => {
   console.log("Server is running");
 });
