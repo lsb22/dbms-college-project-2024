@@ -94,6 +94,7 @@ const StudentsList = () => {
       .then((res) => {
         setStudents([...students, { ...res.data }]);
       })
+
       .catch((err) => {
         setError(err.message);
         setStudents(original);
@@ -129,9 +130,16 @@ const StudentsList = () => {
         borderColor="gray.500"
         borderRadius={5}
         boxShadow="dark-lg"
+        height="400px"
+        overflowY="scroll"
       >
-        <Table variant="striped" colorScheme="teal">
-          <Thead>
+        <Table variant="striped" colorScheme="teal" size="md">
+          <Thead
+            position="sticky"
+            top={0}
+            zIndex={1}
+            backdropFilter="blur(10px)"
+          >
             <Tr>
               <Th isNumeric width="50px">
                 <Text textAlign="center">Id</Text>

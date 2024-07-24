@@ -29,7 +29,7 @@ const useClassrooms = () => {
     return () => controller.abort();
   }, []);
 
-  return { classrooms, error };
+  return { classrooms, error, setClassrooms, setError };
 };
 
 export default useClassrooms;

@@ -9,7 +9,7 @@ const NavBar = () => {
       justifyContent="space-between"
       alignContent="center"
       paddingX={5}
-      paddingY={2}
+      paddingY={5}
     >
       <Image height={10} src={logo} />
       <HStack>
