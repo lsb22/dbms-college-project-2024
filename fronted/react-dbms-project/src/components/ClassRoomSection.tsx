@@ -19,7 +19,7 @@ const ClassRoomSection = ({
   return (
     <>
       {error && <p>{error}</p>}
-      <SimpleGrid columns={{ sm: 2, lg: 2, xl: 4 }} padding={10} gap={5}>
+      <SimpleGrid columns={{ sm: 1, lg: 2, xl: 4 }} padding={10} gap={5}>
         <CreateClassroom createNewClassroom={createNewClassroom} />
         {classrooms.map((classroom) => (
           <ClassroomCard

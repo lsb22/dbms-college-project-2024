@@ -14,14 +14,15 @@ const NavBar = () => {
       <Image height={10} src={logo} />
       <HStack>
         <ColorModeSwitch />
+
         <Text paddingRight={6}>
-          <Link to="/">DashBoard</Link>
+          <Link to="/">Login</Link>
         </Text>
         <Text paddingRight={6}>
-          <Link to="/">About</Link>
+          <Link to="/register">Register</Link>
         </Text>
         <Text paddingRight={6}>
-          <Link to="/">Contact</Link>
+          <Link to="/">about</Link>
         </Text>
       </HStack>
     </HStack>

@@ -25,6 +25,31 @@ app.get("/classrooms", (req, res) => {
   });
 });
 
+// logging in
+
+app.post("/validate/login", (req, res) => {
+  if (!req.body) {
+    return console.log("body is null");
+  }
+
+  const { email, password } = req.body;
+
+  const q = "select * from teachers where email = ? and password = ?";
+
+  db.query(q, [email, password], (err, data) => {
+    if (err) {
+      console.log(err.message);
+      return res.status(500).json({ message: "database error" });
+    }
+
+    if (data.length > 0) {
+      return res.json({ success: true, name: data[0].name });
+    } else {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+  });
+});
+
 // retriving students from a praticular class
 
 app.get("/classrooms/get/:classroomId", (req, res) => {

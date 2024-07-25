@@ -59,7 +59,12 @@ const CreateClassroom = ({ createNewClassroom }: Props) => {
   });
   return (
     <Box>
-      <Card alignItems="center" paddingY="123px">
+      <Card
+        alignItems="center"
+        borderRadius={5}
+        boxShadow="dark-lg"
+        height="100%"
+      >
         <CardBody alignContent="center">
           <Button
             size="md"
