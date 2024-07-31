@@ -4,6 +4,7 @@ import DashBoard from "./components/DashBoard";
 import { Route, Routes } from "react-router-dom";
 import StudentsList from "./components/StudentsList";
 import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             element={<StudentsList />}
           />
           <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </GridItem>
     </Grid>

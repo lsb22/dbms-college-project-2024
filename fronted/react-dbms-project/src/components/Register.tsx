@@ -15,36 +15,37 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import apiClient from "../Services/api-client";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   email: z.string().min(10, { message: "Enter valid email" }),
   password: z.string().min(1, { message: "password is required" }),
+  name: z.string().min(4, { message: "name is required" }),
 });
 
-type LoginData = z.infer<typeof schema>;
+type RegisterData = z.infer<typeof schema>;
 
-function Login() {
+function Register() {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<LoginData>({ resolver: zodResolver(schema) });
+  } = useForm<RegisterData>({ resolver: zodResolver(schema) });
   const navigate = useNavigate();
 
-  const handleLogin = (data: LoginData) => {
+  const handleRegister = (data: RegisterData) => {
     apiClient
-      .post("/validate/login", data)
+      .post("/validate/register", data)
       .then((res) => {
         if (res.data.success) {
+          console.log("yessss");
           navigate("/dashboard");
-        } else {
-          alert("Invalid credentials or user doesn't exist");
         }
       })
-      .catch(() => {
-        alert("Login error");
+      .catch((err) => {
+        alert("Registration failed");
+        console.log("no");
       });
   };
 
@@ -61,21 +62,21 @@ function Login() {
             <Image src={logo} height={12} width={150} borderRadius={5} />
           </HStack>
           <CardBody>
-            <Text fontSize="1.5rem">Welcome Back</Text>
-            <Text>
-              Don't have an account yet?{" "}
-              <Link to="/register">
-                <Text display="inline" _hover={{ color: "blue.400" }}>
-                  Sign up
-                </Text>
-              </Link>
-            </Text>
+            <Text fontSize="1.5rem">Register</Text>
             <form
               onSubmit={handleSubmit((data) => {
-                handleLogin(data);
+                handleRegister(data);
                 reset();
               })}
             >
+              <FormControl mt={7}>
+                <Input type="text" placeholder="name" {...register("name")} />
+                {errors.name && (
+                  <Text textAlign="left" color="red">
+                    {errors.name.message}
+                  </Text>
+                )}
+              </FormControl>
               <FormControl mt={7}>
                 <Input
                   type="email"
@@ -101,7 +102,7 @@ function Login() {
                 )}
               </FormControl>
               <Button type="submit" mt={10} width="355px" colorScheme="blue">
-                Login
+                Register
               </Button>
             </form>
           </CardBody>
@@ -111,4 +112,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
