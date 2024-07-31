@@ -16,6 +16,8 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import apiClient from "../Services/api-client";
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./AuthContext";
 
 const schema = z.object({
   email: z.string().min(10, { message: "Enter valid email" }),
@@ -32,12 +34,14 @@ function Login() {
     formState: { errors },
   } = useForm<LoginData>({ resolver: zodResolver(schema) });
   const navigate = useNavigate();
+  const useAuth = useContext(AuthContext);
 
   const handleLogin = (data: LoginData) => {
     apiClient
       .post("/validate/login", data)
       .then((res) => {
         if (res.data.success) {
+          useAuth?.loggin();
           navigate("/dashboard");
         } else {
           alert("Invalid credentials or user doesn't exist");

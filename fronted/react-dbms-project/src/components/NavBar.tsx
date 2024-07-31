@@ -1,31 +1,15 @@
-import { HStack, Image, Text } from "@chakra-ui/react";
-import logo from "../images/letter-l.png";
-import ColorModeSwitch from "./ColorModeSwitch";
-import { Link } from "react-router-dom";
+import LoggedinNavbar from "./LoggedinNavbar";
+import { useContext } from "react";
+import { AuthContext } from "./AuthContext";
+import LoggedoutNavbar from "./LoggedoutNavbar";
 
 const NavBar = () => {
+  const useAuth = useContext(AuthContext);
   return (
-    <HStack
-      justifyContent="space-between"
-      alignContent="center"
-      paddingX={5}
-      paddingY={5}
-    >
-      <Image height={10} src={logo} />
-      <HStack>
-        <ColorModeSwitch />
-
-        <Text paddingRight={6}>
-          <Link to="/">Login</Link>
-        </Text>
-        <Text paddingRight={6}>
-          <Link to="/register">Register</Link>
-        </Text>
-        <Text paddingRight={6}>
-          <Link to="/">about</Link>
-        </Text>
-      </HStack>
-    </HStack>
+    <>
+      {console.log(useAuth?.isLoggedIn)}
+      {useAuth?.isLoggedIn ? <LoggedinNavbar /> : <LoggedoutNavbar />}
+    </>
   );
 };
 

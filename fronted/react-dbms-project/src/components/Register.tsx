@@ -16,6 +16,8 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import apiClient from "../Services/api-client";
 import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { AuthContext } from "./AuthContext";
 
 const schema = z.object({
   email: z.string().min(10, { message: "Enter valid email" }),
@@ -33,17 +35,20 @@ function Register() {
     formState: { errors },
   } = useForm<RegisterData>({ resolver: zodResolver(schema) });
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+  const useAuth = useContext(AuthContext);
 
   const handleRegister = (data: RegisterData) => {
     apiClient
       .post("/validate/register", data)
       .then((res) => {
         if (res.data.success) {
-          console.log("yessss");
+          useAuth?.loggin();
           navigate("/dashboard");
         }
       })
       .catch((err) => {
+        setErrorMessage(err.message);
         alert("Registration failed");
         console.log("no");
       });
@@ -51,6 +56,7 @@ function Register() {
 
   return (
     <SimpleGrid pt="100px" columns={1}>
+      {errorMessage && <Text color="red">{errorMessage}</Text>}
       <VStack>
         <Card
           width="400px"
