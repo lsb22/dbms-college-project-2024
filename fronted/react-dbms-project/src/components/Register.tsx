@@ -44,7 +44,7 @@ function Register() {
       .then((res) => {
         if (res.data.success) {
           useAuth?.loggin();
-          navigate("/dashboard");
+          navigate("/dashboard/" + res.data.id);
         }
       })
       .catch((err) => {

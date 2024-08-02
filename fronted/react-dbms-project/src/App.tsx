@@ -6,8 +6,14 @@ import StudentsList from "./components/StudentsList";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import AuthContextProvider from "./components/AuthContext";
+import { useState } from "react";
 
 function App() {
+  const [teacherId, setTeacherId] = useState(0);
+  const sendTeacherId = (id: number) => {
+    setTeacherId(id);
+  };
+
   return (
     <AuthContextProvider>
       <Grid
@@ -21,12 +27,15 @@ function App() {
         }}
       >
         <GridItem area={"nav"}>
-          <NavBar />
+          <NavBar id={teacherId} />
         </GridItem>
 
         <GridItem area={"main"}>
           <Routes>
-            <Route path="/dashboard" element={<DashBoard />} />
+            <Route
+              path="/dashboard/:teacherId"
+              element={<DashBoard sendTeacherId={sendTeacherId} />}
+            />
             <Route
               path="/classroom/students/:classroomId"
               element={<StudentsList />}

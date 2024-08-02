@@ -15,11 +15,9 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 const AuthContextProvider = ({ children }: Props) => {
   const [isLoggedIn, setLogin] = useState(false);
   const loggin = () => {
-    console.log("in login");
     setLogin(true);
   };
   const logout = () => {
-    console.log("in logout");
     setLogin(false);
   };
   return (

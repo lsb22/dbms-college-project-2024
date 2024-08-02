@@ -17,9 +17,12 @@ app.get("/", (req, res) => {
   res.send("hello and welcome user");
 });
 
-app.get("/classrooms", (req, res) => {
-  const q = "select * from classrooms";
-  db.query(q, (err, data) => {
+// fetching classrooms
+
+app.get("/classrooms/:teacherId", (req, res) => {
+  const { teacherId } = req.params;
+  const q = "select * from classrooms where teacher_id = ?";
+  db.query(q, [teacherId], (err, data) => {
     if (err) return res.send(err.message);
     res.send(data);
   });
@@ -46,7 +49,7 @@ app.post("/validate/login", (req, res) => {
     }
 
     if (data.length > 0) {
-      return res.json({ success: true, name: data[0].name });
+      return res.json({ success: true, name: data[0].name, id: data[0].id });
     } else {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -84,7 +87,11 @@ app.post("/validate/register", (req, res) => {
             .status(500)
             .json({ message: "database error", success: false });
         }
-        return res.json({ success: true, message: "user added successfully" });
+        return res.json({
+          success: true,
+          message: "user added successfully",
+          id: d.insertId,
+        });
       });
     }
   });

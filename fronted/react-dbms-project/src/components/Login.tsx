@@ -42,7 +42,7 @@ function Login() {
       .then((res) => {
         if (res.data.success) {
           useAuth?.loggin();
-          navigate("/dashboard");
+          navigate("/dashboard/" + res.data.id);
         } else {
           alert("Invalid credentials or user doesn't exist");
         }

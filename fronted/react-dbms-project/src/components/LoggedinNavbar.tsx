@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import { useContext } from "react";
 
-const LoggedinNavbar = () => {
+interface Props {
+  id: number;
+}
+
+const LoggedinNavbar = ({ id }: Props) => {
   const useAuth = useContext(AuthContext);
   return (
     <HStack
@@ -19,10 +23,10 @@ const LoggedinNavbar = () => {
         <ColorModeSwitch />
 
         <Text paddingRight={6}>
-          <Link to="/dashboard">Dashboard</Link>
+          <Link to={`/dashboard/${id}`}>Dashboard</Link>
         </Text>
         <Text paddingRight={6}>
-          <Link to="/dashboard">about</Link>
+          <Link to={`/dashboard/${id}`}>about</Link>
         </Text>
         <Text paddingRight={6}>
           <Link to="/" onClick={useAuth?.logout}>

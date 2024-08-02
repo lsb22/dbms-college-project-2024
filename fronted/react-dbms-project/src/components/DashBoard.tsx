@@ -1,11 +1,20 @@
 import useClassrooms from "../hooks/useClassrooms";
 import ClassRoomSection from "./ClassRoomSection";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClassFormData } from "./CreateClassroom";
 import apiClient from "../Services/api-client";
 
-const DashBoard = () => {
-  const { classrooms, setClassrooms, error, setError } = useClassrooms();
+interface Props {
+  sendTeacherId: (id: number) => void;
+}
+
+const DashBoard = ({ sendTeacherId }: Props) => {
+  const { teacherId } = useParams();
+  if (!teacherId) return;
+  const { classrooms, setClassrooms, error, setError } = useClassrooms(
+    parseInt(teacherId)
+  );
+  sendTeacherId(parseInt(teacherId));
   const navigate = useNavigate();
 
   const handleClassroomSelect = (classroomId: number) => {

@@ -10,14 +10,14 @@ export interface Classroom {
   year: number;
 }
 
-const useClassrooms = () => {
+const useClassrooms = (teacherId: number) => {
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
     apiClient
-      .get("/classrooms", { signal: controller.signal })
+      .get(`/classrooms/${teacherId}`, { signal: controller.signal })
       .then((res) => {
         setClassrooms(res.data);
       })
