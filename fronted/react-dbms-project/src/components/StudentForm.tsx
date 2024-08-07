@@ -17,9 +17,15 @@ interface Props {
 const schema = z.object({
   name: z.string().min(4, { message: "name is required" }),
   age: z.number({ invalid_type_error: "Age field is required" }),
-  semester: z.number({ invalid_type_error: "Semester is required" }),
+  semester: z
+    .number({ invalid_type_error: "Semester is required" })
+    .min(1, { message: "Semester should be greater than equal 1" })
+    .max(8, { message: "Semester should be less than equal to 8" }),
   classroom_id: z.number({ invalid_type_error: "classroomId is required" }),
-  year: z.number({ invalid_type_error: "year is required" }),
+  year: z
+    .number({ invalid_type_error: "year is required" })
+    .min(1, { message: "Year should be greater than equal to 1" })
+    .max(4, { message: "Year should be less than equal to 4" }),
 });
 
 export type FormData = z.infer<typeof schema>;

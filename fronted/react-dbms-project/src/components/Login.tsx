@@ -48,7 +48,7 @@ function Login() {
         }
       })
       .catch(() => {
-        alert("Login error");
+        alert("Invalid credentials");
       });
   };
 

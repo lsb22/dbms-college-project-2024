@@ -49,7 +49,7 @@ function Register() {
       })
       .catch((err) => {
         setErrorMessage(err.message);
-        alert("Registration failed");
+        alert(err.message);
         console.log("no");
       });
   };

@@ -60,7 +60,10 @@ app.post("/validate/login", (req, res) => {
 
 app.post("/validate/register", (req, res) => {
   if (!req.body) {
-    return res.status(400).json({ message: "body is null", success: false });
+    return res.status(400).json({
+      message: "body is null, Please enter the details",
+      success: false,
+    });
   }
 
   console.log(req.body);
