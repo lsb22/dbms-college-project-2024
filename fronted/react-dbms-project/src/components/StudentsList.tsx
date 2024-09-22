@@ -23,14 +23,15 @@ const StudentsList = () => {
   const { classroomId } = useParams();
   const id = classroomId ? parseInt(classroomId) : null;
   if (id === null) return;
-  const { students, error, setStudents, setError } = useStudents(id);
+  const { data, error, setData, setError } = useStudents(id);
+  console.log(data);
   const columnRef = useRef<HTMLInputElement>(null);
 
   const addColumn = (newColumn: string) => {
     if (!newColumn) return;
-    const original = [...students];
-    setStudents(
-      students.map((student) => ({
+    const original = [...data];
+    setData(
+      data.map((student) => ({
         ...student,
         [newColumn]: 0,
       }))
@@ -40,7 +41,7 @@ const StudentsList = () => {
       .post(`/classrooms/addColumn/${newColumn}`, newColumn)
       .catch((err) => {
         setError(err.message);
-        setStudents(original);
+        setData(original);
       });
   };
 
@@ -51,10 +52,10 @@ const StudentsList = () => {
   };
 
   const renderHeading = () => {
-    if (students.length === 0) return null;
+    if (data.length === 0) return null;
 
     const iaColumns = [];
-    for (const keys in students[0]) {
+    for (const keys in data[0]) {
       if (keys.slice(0, 2) === "IA") {
         iaColumns.push(
           <Th key={keys} isNumeric width="50px">
@@ -67,9 +68,9 @@ const StudentsList = () => {
   };
 
   const updateMark = (id: number, column: string, marks: number) => {
-    const original = [...students];
-    setStudents(
-      students.map((student) =>
+    const original = [...data];
+    setData(
+      data.map((student) =>
         student.id === id ? { ...student, [column]: marks } : student
       )
     );
@@ -78,26 +79,26 @@ const StudentsList = () => {
       .patch(`/classrooms/updateMarks/${id}`, { [column]: marks })
       .catch((err) => {
         setError(err.message);
-        setStudents(original);
+        setData(original);
       });
   };
 
-  const addNewStudent = (data: FormData) => {
-    const original = [...students];
+  const addNewStudent = (newData: FormData) => {
+    const original = [...data];
 
-    const newStudent = { ...data, id: 0 };
+    const newStudent = { ...newData, id: 0 };
 
-    setStudents([...students, newStudent]);
+    setData([...data, newStudent]);
 
     apiClient
       .post("/classrooms/addStudent", newStudent)
       .then((res) => {
-        setStudents([...students, { ...res.data }]);
+        setData([...data, { ...res.data }]);
       })
 
       .catch((err) => {
         setError(err.message);
-        setStudents(original);
+        setData(original);
       });
   };
 
@@ -163,7 +164,7 @@ const StudentsList = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {students.map((student) => (
+            {data.map((student) => (
               <StudentTable
                 key={student.id}
                 student={student}

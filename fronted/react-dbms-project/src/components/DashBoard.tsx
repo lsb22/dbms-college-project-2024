@@ -11,9 +11,7 @@ interface Props {
 const DashBoard = ({ sendTeacherId }: Props) => {
   const { teacherId } = useParams();
   if (!teacherId) return;
-  const { classrooms, setClassrooms, error, setError } = useClassrooms(
-    parseInt(teacherId)
-  );
+  const { data, setData, error, setError } = useClassrooms(parseInt(teacherId));
   sendTeacherId(parseInt(teacherId));
   const navigate = useNavigate();
 
@@ -21,26 +19,26 @@ const DashBoard = ({ sendTeacherId }: Props) => {
     navigate(`/classroom/students/${classroomId}`);
   };
 
-  const createNewClassroom = (data: ClassFormData) => {
-    const original = [...classrooms];
-    const newClassroom = { ...data, id: 0 };
-    setClassrooms([...classrooms, newClassroom]);
+  const createNewClassroom = (newData: ClassFormData) => {
+    const original = [...data];
+    const newClassroom = { ...newData, id: 0 };
+    setData([...data, newClassroom]);
 
     apiClient
       .post("/classroom/add/NewClassroom", newClassroom)
       .then((res) => {
-        setClassrooms([...classrooms, res.data]);
+        setData([...data, res.data]);
       })
       .catch((err) => {
         setError(err.message);
-        setClassrooms(original);
+        setData(original);
       });
   };
 
   return (
     <>
       <ClassRoomSection
-        classrooms={classrooms}
+        classrooms={data}
         onSelect={handleClassroomSelect}
         error={error}
         createNewClassroom={createNewClassroom}

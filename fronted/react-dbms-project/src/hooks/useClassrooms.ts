@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import apiClient from "../Services/api-client";
-import { CanceledError } from "axios";
+import useData from "./useData";
 
 export interface Classroom {
   id: number;
@@ -10,26 +8,7 @@ export interface Classroom {
   year: number;
 }
 
-const useClassrooms = (teacherId: number) => {
-  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const controller = new AbortController();
-    apiClient
-      .get(`/classrooms/${teacherId}`, { signal: controller.signal })
-      .then((res) => {
-        setClassrooms(res.data);
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
-        setError(err.message);
-      });
-
-    return () => controller.abort();
-  }, []);
-
-  return { classrooms, error, setClassrooms, setError };
-};
+const useClassrooms = (teacherId: number) =>
+  useData<Classroom>(`classrooms/${teacherId}`);
 
 export default useClassrooms;
