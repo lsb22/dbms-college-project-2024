@@ -1,10 +1,9 @@
-import useClassrooms from "../hooks/useClassrooms";
-import ClassRoomSection from "./ClassRoomSection";
 import { useNavigate, useParams } from "react-router-dom";
-import { ClassFormData } from "./CreateClassroom";
-import apiClient from "../Services/api-client";
+import useClassrooms from "../hooks/useClassrooms";
+import addNewClassroom from "../Services/addNewClassroom";
+import ClassRoomSection from "./ClassRoomSection";
 
-// this component is used to handle new classroom creation and display classroomsection
+// this component is used to display classroomsection
 
 interface Props {
   sendTeacherId: (id: number) => void;
@@ -21,29 +20,15 @@ const DashBoard = ({ sendTeacherId }: Props) => {
     navigate(`/classroom/students/${classroomId}`);
   };
 
-  const createNewClassroom = (newData: ClassFormData) => {
-    const original = [...data];
-    const newClassroom = { ...newData, id: 0 };
-    setData([...data, newClassroom]);
-
-    apiClient
-      .post("/classroom/add/NewClassroom", newClassroom)
-      .then((res) => {
-        setData([...data, res.data]);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setData(original);
-      });
-  };
-
   return (
     <>
       <ClassRoomSection
         classrooms={data}
         onSelect={handleClassroomSelect}
         error={error}
-        createNewClassroom={createNewClassroom}
+        createNewClassroom={(newData) =>
+          addNewClassroom(newData, data, setData, setError)
+        }
       />
     </>
   );

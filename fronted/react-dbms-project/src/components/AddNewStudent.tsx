@@ -14,7 +14,7 @@ import StudentForm, { FormData } from "./StudentForm";
 // used to display modal to get student details
 
 interface Props {
-  addNewStudent: (data: FormData) => void;
+  addNewStudent: (studentData: FormData) => void;
 }
 
 const AddNewStudent = ({ addNewStudent }: Props) => {

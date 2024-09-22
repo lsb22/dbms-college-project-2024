@@ -13,7 +13,7 @@ import z from "zod";
 // this component is used to get new student data
 
 interface Props {
-  addNewStudent: (data: FormData) => void;
+  addNewStudent: (studetnData: FormData) => void;
 }
 
 const schema = z.object({

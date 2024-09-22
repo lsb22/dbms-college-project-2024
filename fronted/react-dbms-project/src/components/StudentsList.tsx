@@ -1,5 +1,3 @@
-import { useParams } from "react-router-dom";
-import useStudents from "../hooks/useStudents";
 import {
   Box,
   Button,
@@ -13,14 +11,17 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import StudentTable from "./StudentTable";
 import { useRef } from "react";
-import apiClient from "../Services/api-client";
+import { useParams } from "react-router-dom";
+import useStudents from "../hooks/useStudents";
+import addNewColumn from "../Services/addNewColumn";
+import addNewStudent from "../Services/addNewStudent";
+import updateMarks from "../Services/updateMarks";
 import AddNewStudent from "./AddNewStudent";
-import { FormData } from "./StudentForm";
+import StudentTable from "./StudentTable";
 
-// rerouted here from dashboard, on clicking some classroom
-// this component is used to render students of a particular column
+// re-routed here from dashboard, on clicking some classroom
+// this component is used to render students of a particular classroom
 
 const StudentsList = () => {
   const { classroomId } = useParams();
@@ -30,28 +31,10 @@ const StudentsList = () => {
   console.log(data);
   const columnRef = useRef<HTMLInputElement>(null);
 
-  // api call to add new column
-  const addColumn = (newColumn: string) => {
-    if (!newColumn) return;
-    const original = [...data];
-    setData(
-      data.map((student) => ({
-        ...student,
-        [newColumn]: 0,
-      }))
-    );
-
-    apiClient
-      .post(`/classrooms/addColumn/${newColumn}`, newColumn)
-      .catch((err) => {
-        setError(err.message);
-        setData(original);
-      });
-  };
-
+  // api call to update mark
   const handleClick = () => {
     if (columnRef.current != null && columnRef.current.value) {
-      addColumn(columnRef.current.value);
+      addNewColumn(columnRef.current.value, data, setData, setError);
     }
   };
 
@@ -71,47 +54,14 @@ const StudentsList = () => {
     return iaColumns;
   };
 
-  // api call to update mark
-  const updateMark = (id: number, column: string, marks: number) => {
-    const original = [...data];
-    setData(
-      data.map((student) =>
-        student.id === id ? { ...student, [column]: marks } : student
-      )
-    );
-
-    apiClient
-      .patch(`/classrooms/updateMarks/${id}`, { [column]: marks })
-      .catch((err) => {
-        setError(err.message);
-        setData(original);
-      });
-  };
-
-  // api call to add new student
-  const addNewStudent = (newData: FormData) => {
-    const original = [...data];
-
-    const newStudent = { ...newData, id: 0 };
-
-    setData([...data, newStudent]);
-
-    apiClient
-      .post("/classrooms/addStudent", newStudent)
-      .then((res) => {
-        setData([...data, { ...res.data }]);
-      })
-
-      .catch((err) => {
-        setError(err.message);
-        setData(original);
-      });
-  };
-
   return (
     <SimpleGrid padding={6}>
       {error && <Text>{error}</Text>}
-      <AddNewStudent addNewStudent={(data) => addNewStudent(data)} />
+      <AddNewStudent
+        addNewStudent={(studentData) =>
+          addNewStudent(studentData, data, setData, setError)
+        }
+      />
       <Box>
         <Box mb={8}>
           <Input
@@ -174,7 +124,9 @@ const StudentsList = () => {
               <StudentTable
                 key={student.id}
                 student={student}
-                updateMark={updateMark}
+                updateMark={(id, column, marks) =>
+                  updateMarks(id, column, marks, data, setData, setError)
+                }
               />
             ))}
           </Tbody>
