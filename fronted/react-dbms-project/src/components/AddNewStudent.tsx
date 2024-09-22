@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 import StudentForm, { FormData } from "./StudentForm";
 
+// used to display modal to get student details
+
 interface Props {
   addNewStudent: (data: FormData) => void;
 }

@@ -19,6 +19,9 @@ import apiClient from "../Services/api-client";
 import AddNewStudent from "./AddNewStudent";
 import { FormData } from "./StudentForm";
 
+// rerouted here from dashboard, on clicking some classroom
+// this component is used to render students of a particular column
+
 const StudentsList = () => {
   const { classroomId } = useParams();
   const id = classroomId ? parseInt(classroomId) : null;
@@ -27,6 +30,7 @@ const StudentsList = () => {
   console.log(data);
   const columnRef = useRef<HTMLInputElement>(null);
 
+  // api call to add new column
   const addColumn = (newColumn: string) => {
     if (!newColumn) return;
     const original = [...data];
@@ -67,6 +71,7 @@ const StudentsList = () => {
     return iaColumns;
   };
 
+  // api call to update mark
   const updateMark = (id: number, column: string, marks: number) => {
     const original = [...data];
     setData(
@@ -83,6 +88,7 @@ const StudentsList = () => {
       });
   };
 
+  // api call to add new student
   const addNewStudent = (newData: FormData) => {
     const original = [...data];
 

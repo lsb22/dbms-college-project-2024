@@ -10,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
+// this component is used to get new student data
+
 interface Props {
   addNewStudent: (data: FormData) => void;
 }

@@ -4,12 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ClassFormData } from "./CreateClassroom";
 import apiClient from "../Services/api-client";
 
+// this component is used to handle new classroom creation and display classroomsection
+
 interface Props {
   sendTeacherId: (id: number) => void;
 }
 
 const DashBoard = ({ sendTeacherId }: Props) => {
-  const { teacherId } = useParams();
+  const { teacherId } = useParams(); // we will navigate here from login page
   if (!teacherId) return;
   const { data, setData, error, setError } = useClassrooms(parseInt(teacherId));
   sendTeacherId(parseInt(teacherId));

@@ -3,6 +3,8 @@ import { Classroom } from "../hooks/useClassrooms";
 import ClassroomCard from "./ClassroomCard";
 import CreateClassroom, { ClassFormData } from "./CreateClassroom";
 
+// this component is used to render the existing classrooms with the option to create new classroom
+
 interface Props {
   classrooms: Classroom[];
   error: string;
