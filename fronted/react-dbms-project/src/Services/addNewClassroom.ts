@@ -14,7 +14,7 @@ const createNewClassroom = (
   setData([...data, newClassroom]);
 
   apiClient
-    .post("/classroom/add/NewClassroom", newClassroom)
+    .post("/classrooms/add/NewClassroom", newClassroom)
     .then((res) => {
       setData([...data, res.data]);
     })
