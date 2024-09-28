@@ -25,14 +25,43 @@ classroomRouter.get("/get/:classroomId", (req, res) => {
   });
 });
 
+// retriving test_list
+
+classroomRouter.get("/testList/:classroomID", (req, res) => {
+  const { classroomID } = req.params;
+  const q =
+    "select tests -> '$.tests' as testList from class_tests where classroomId = ?";
+
+  db.query(q, [classroomID], (err, data) => {
+    if (err)
+      return res.status(500).json({ error: "Failed to fetch the test lists." });
+    return res.status(200).send(data);
+  });
+});
+
 // adding new columns -> IA'S
 
-classroomRouter.post("/addColumn/:classroomName", (req, res) => {
-  const { classroomName } = req.params;
-  const q = `alter table students add ${classroomName} int default 0`;
+classroomRouter.post("/addColumn/:classroomId/:testName", (req, res) => {
+  const { testName, classroomId } = req.params;
+  const q = `alter table students add ${testName} int default 0`;
   db.query(q, (err) => {
-    if (err) return res.send(err.message);
-    res.json({ message: "colomn added successfully" });
+    if (err && err.errno !== 1060) {
+      return res.status(400).json({ message: err.sqlMessage });
+    } else {
+      const q2 = `
+        update class_tests 
+        set tests = json_array_append(tests,'$.tests',?)
+        where classroomId = ?
+      `;
+
+      db.query(q2, [testName, classroomId], (error) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({ message: error.message });
+        }
+        res.status(200).json({ message: "column added successfully" });
+      });
+    }
   });
 });
 

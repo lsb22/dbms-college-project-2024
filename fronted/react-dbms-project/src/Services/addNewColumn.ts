@@ -5,6 +5,7 @@ import apiClient from "./api-client";
 // to add new column
 
 const addNewColumn = (
+  classroomId: number,
   newColumn: string,
   data: Student[],
   setData: Dispatch<React.SetStateAction<Student[]>>,
@@ -20,7 +21,7 @@ const addNewColumn = (
   );
 
   apiClient
-    .post(`/classrooms/addColumn/${newColumn}`, newColumn)
+    .post(`/classrooms/addColumn/${classroomId}/${newColumn}`)
     .catch((err) => {
       setError(err.message);
       setData(original);

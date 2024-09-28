@@ -4,16 +4,19 @@ import { Student } from "../hooks/useStudents";
 interface Props {
   student: Student;
   updateMark: (id: number, column: string, marks: number) => void;
+  testList: string[];
 }
 
-const StudentTable = ({ student, updateMark }: Props) => {
+const StudentTable = ({ student, updateMark, testList }: Props) => {
   const renderMarks = () => {
-    if (!student) return null;
+    if (!student || !testList) return null;
 
     const marks = [];
+    const set = new Set<string>(testList);
     let i = 0;
+
     for (const keys in student) {
-      if (keys.slice(0, 2) === "IA") {
+      if (set.has(keys)) {
         marks.push(
           <Td key={i++} isNumeric>
             <Input

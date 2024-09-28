@@ -14,6 +14,7 @@ import {
 import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import useStudents from "../hooks/useStudents";
+import useTests from "../hooks/useTests";
 import addNewColumn from "../Services/addNewColumn";
 import addNewStudent from "../Services/addNewStudent";
 import updateMarks from "../Services/updateMarks";
@@ -28,22 +29,29 @@ const StudentsList = () => {
   const id = classroomId ? parseInt(classroomId) : null;
   if (id === null) return;
   const { data, error, setData, setError } = useStudents(id);
-  console.log(data);
   const columnRef = useRef<HTMLInputElement>(null);
+  const { data: testData } = useTests(id);
+  let str = testData[0]?.testList;
+  let testList: string[] = [];
 
-  // api call to update mark
+  if (str) testList = JSON.parse(str);
+
+  // api call to add new IA column
   const handleClick = () => {
     if (columnRef.current != null && columnRef.current.value) {
-      addNewColumn(columnRef.current.value, data, setData, setError);
+      addNewColumn(id, columnRef.current.value, data, setData, setError);
     }
   };
 
   const renderHeading = () => {
-    if (data.length === 0) return null;
+    if (data.length === 0 || testList.length === 0) return null;
 
     const iaColumns = [];
+    const set = new Set<string>(testList);
+
     for (const keys in data[0]) {
-      if (keys.slice(0, 2) === "IA") {
+      if (set.has(keys)) {
+        // it's enough to see one student object as it will have all the IA's list
         iaColumns.push(
           <Th key={keys} isNumeric width="50px">
             <Text textAlign="center">{keys}</Text>
@@ -51,6 +59,7 @@ const StudentsList = () => {
         );
       }
     }
+
     return iaColumns;
   };
 
@@ -127,6 +136,7 @@ const StudentsList = () => {
                 updateMark={(id, column, marks) =>
                   updateMarks(id, column, marks, data, setData, setError)
                 }
+                testList={testList}
               />
             ))}
           </Tbody>
