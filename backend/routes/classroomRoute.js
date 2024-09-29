@@ -111,7 +111,7 @@ classroomRouter.post("/add/NewClassroom", (req, res) => {
   if (!req.body) {
     return console.log("body is null");
   }
-  console.log(req.body);
+  // console.log(req.body);
   const q = "insert into classrooms values(default,?,?,?,?)";
   db.query(
     q,
@@ -122,8 +122,18 @@ classroomRouter.post("/add/NewClassroom", (req, res) => {
       req.body.subject_name,
     ],
     (err, data) => {
-      if (err) console.log(err.message);
-      console.log(data);
+      if (err)
+        return res
+          .status(500)
+          .json({ message: "Server error. Try after some time." });
+      const q2 = `insert into class_tests values (?,'{"tests":[]}')`;
+      db.query(q2, [data.insertId], (error) => {
+        if (error)
+          return res
+            .status(500)
+            .json({ message: "Server error. Try after some time." });
+        res.status(200).json({ message: "Classroom was added successfully." });
+      });
     }
   );
 });
