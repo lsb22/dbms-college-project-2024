@@ -1,23 +1,23 @@
 import {
+  Button,
   Card,
   CardBody,
-  VStack,
+  FormControl,
+  HStack,
   Image,
+  Input,
   SimpleGrid,
   Text,
-  HStack,
-  FormControl,
-  Input,
-  Button,
+  VStack,
 } from "@chakra-ui/react";
-import logo from "../images/login-img.png";
-import { useForm } from "react-hook-form";
-import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import apiClient from "../Services/api-client";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-import { AuthContext } from "./AuthContext";
+import z from "zod";
+import logo from "../images/login-img.png";
+import apiClient from "../Services/api-client";
+import AuthStore from "../store/AuthStore";
 
 const schema = z.object({
   email: z.string().min(10, { message: "Enter valid email" }),
@@ -36,14 +36,14 @@ function Register() {
   } = useForm<RegisterData>({ resolver: zodResolver(schema) });
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-  const useAuth = useContext(AuthContext);
+  const { login } = AuthStore();
 
   const handleRegister = (data: RegisterData) => {
     apiClient
       .post("/validate/register", data)
       .then((res) => {
         if (res.data.success) {
-          useAuth?.loggin();
+          login();
           navigate("/dashboard/" + res.data.id);
         }
       })

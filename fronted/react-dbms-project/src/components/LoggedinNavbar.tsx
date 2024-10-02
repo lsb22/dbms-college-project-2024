@@ -1,16 +1,15 @@
 import { HStack, Image, Text } from "@chakra-ui/react";
-import logo from "../images/letter-l.png";
-import ColorModeSwitch from "./ColorModeSwitch";
 import { Link } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
-import { useContext } from "react";
+import logo from "../images/letter-l.png";
+import AuthStore from "../store/AuthStore";
+import ColorModeSwitch from "./ColorModeSwitch";
 
 interface Props {
   id: number;
 }
 
 const LoggedinNavbar = ({ id }: Props) => {
-  const useAuth = useContext(AuthContext);
+  const { logout } = AuthStore();
   return (
     <HStack
       justifyContent="space-between"
@@ -29,7 +28,7 @@ const LoggedinNavbar = ({ id }: Props) => {
           <Link to={`/dashboard/${id}`}>about</Link>
         </Text>
         <Text paddingRight={6}>
-          <Link to="/" onClick={useAuth?.logout}>
+          <Link to="/" onClick={() => logout()}>
             logout
           </Link>
         </Text>

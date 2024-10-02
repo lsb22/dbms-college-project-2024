@@ -1,19 +1,14 @@
 import LoggedinNavbar from "./LoggedinNavbar";
-import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
 import LoggedoutNavbar from "./LoggedoutNavbar";
+import AuthStore from "../store/AuthStore";
 
 interface Props {
   id: number;
 }
 
 const NavBar = ({ id }: Props) => {
-  const useAuth = useContext(AuthContext);
-  return (
-    <>
-      {useAuth?.isLoggedIn ? <LoggedinNavbar id={id} /> : <LoggedoutNavbar />}
-    </>
-  );
+  const { isLoggedIn } = AuthStore();
+  return <>{isLoggedIn ? <LoggedinNavbar id={id} /> : <LoggedoutNavbar />}</>;
 };
 
 export default NavBar;
