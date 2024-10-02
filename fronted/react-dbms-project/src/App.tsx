@@ -1,5 +1,4 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import DashBoard from "./components/DashBoard";
 import Login from "./components/Login";
@@ -8,11 +7,6 @@ import Register from "./components/Register";
 import StudentsList from "./components/StudentsList";
 
 function App() {
-  const [teacherId, setTeacherId] = useState(0);
-  const sendTeacherId = (id: number) => {
-    setTeacherId(id);
-  };
-
   return (
     <Grid
       templateAreas={{
@@ -25,15 +19,12 @@ function App() {
       }}
     >
       <GridItem area={"nav"}>
-        <NavBar id={teacherId} />
+        <NavBar />
       </GridItem>
 
       <GridItem area={"main"}>
         <Routes>
-          <Route
-            path="/dashboard/:teacherId"
-            element={<DashBoard sendTeacherId={sendTeacherId} />}
-          />
+          <Route path="/dashboard/:teacherId" element={<DashBoard />} />
           <Route
             path="/classroom/students/:classroomId"
             element={<StudentsList />}

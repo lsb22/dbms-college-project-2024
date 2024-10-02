@@ -3,7 +3,8 @@ import { persist, PersistOptions } from "zustand/middleware";
 
 interface AuthState {
   isLoggedIn: boolean;
-  login: () => void;
+  teacherId: number;
+  login: (id: number) => void;
   logout: () => void;
 }
 
@@ -18,7 +19,8 @@ const AuthStore = create<AuthState>(
   authStorePersist(
     (set) => ({
       isLoggedIn: false,
-      login: () => set({ isLoggedIn: true }),
+      teacherId: 0,
+      login: (id) => set({ isLoggedIn: true, teacherId: id }),
       logout: () => set({ isLoggedIn: false }),
     }),
     {

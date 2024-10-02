@@ -5,15 +5,10 @@ import ClassRoomSection from "./ClassRoomSection";
 
 // this component is used to display classroomsection
 
-interface Props {
-  sendTeacherId: (id: number) => void;
-}
-
-const DashBoard = ({ sendTeacherId }: Props) => {
+const DashBoard = () => {
   const { teacherId } = useParams(); // we will navigate here from login page
   if (!teacherId) return;
   const { data, setData, error, setError } = useClassrooms(parseInt(teacherId));
-  sendTeacherId(parseInt(teacherId));
   const navigate = useNavigate();
 
   const handleClassroomSelect = (classroomId: number) => {

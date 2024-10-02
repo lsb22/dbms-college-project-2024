@@ -4,12 +4,8 @@ import logo from "../images/letter-l.png";
 import AuthStore from "../store/AuthStore";
 import ColorModeSwitch from "./ColorModeSwitch";
 
-interface Props {
-  id: number;
-}
-
-const LoggedinNavbar = ({ id }: Props) => {
-  const { logout } = AuthStore();
+const LoggedinNavbar = () => {
+  const { logout, teacherId } = AuthStore();
   return (
     <HStack
       justifyContent="space-between"
@@ -22,10 +18,10 @@ const LoggedinNavbar = ({ id }: Props) => {
         <ColorModeSwitch />
 
         <Text paddingRight={6}>
-          <Link to={`/dashboard/${id}`}>Dashboard</Link>
+          <Link to={`/dashboard/${teacherId}`}>Dashboard</Link>
         </Text>
         <Text paddingRight={6}>
-          <Link to={`/dashboard/${id}`}>about</Link>
+          <Link to={`/dashboard/${teacherId}`}>about</Link>
         </Text>
         <Text paddingRight={6}>
           <Link to="/" onClick={() => logout()}>

@@ -40,7 +40,7 @@ function Login() {
       .post("/validate/login", data)
       .then((res) => {
         if (res.data.success) {
-          login();
+          login(res.data.id);
           navigate("/dashboard/" + res.data.id);
         } else {
           alert("Invalid credentials or user doesn't exist");
